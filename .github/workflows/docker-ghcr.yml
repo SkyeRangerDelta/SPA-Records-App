@@ -45,12 +45,12 @@ jobs:
             --label "org.opencontainers.image.authors=${{ github.actor }}" \
             --label "org.opencontainers.image.title=${{ env.REPO }}" \
             --label "org.opencontainers.image.source=https://github.com/${{ env.REPO }}" \
-            -t ghcr.io/${{ env.REPO }}/spa-records-app:${{ env.TAG }} \
-            -t ghcr.io/${{ env.REPO }}/spa-records-app:${{ github.sha }} \
+            -t ghcr.io/${{ env.REPO }}:${{ env.TAG }} \
+            -t ghcr.io/${{ env.REPO }}:${{ github.sha }} \
             .
 
       - name: Push Docker image (branch tag)
-        run: docker push ghcr.io/${{ env.REPO }}/spa-records-app:${{ env.TAG }}
+        run: docker push ghcr.io/${{ env.REPO }}:${{ env.TAG }}
 
       - name: Push Docker image (commit SHA)
-        run: docker push ghcr.io/${{ env.REPO }}/spa-records-app:${{ github.sha }}
+        run: docker push ghcr.io/${{ env.REPO }}:${{ github.sha }}

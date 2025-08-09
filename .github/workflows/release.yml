@@ -30,9 +30,8 @@ jobs:
               - 'spa-records-app/**'
             backend:
               - 'deno.json'
-              - 'main.ts'
-              - 'main_test.ts'
               - 'Dockerfile'
+              - 'api/**'
 
   build-frontend:
     name: Build Angular (only if changed)
@@ -65,8 +64,8 @@ jobs:
         with: { deno-version: v1.x }
       - name: Lint/format/test
         run: |
-          deno fmt --check
-          deno lint
+          deno fmt --check api
+          deno lint api
           deno test -A
 
   release:
