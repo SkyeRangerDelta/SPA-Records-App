@@ -100,6 +100,18 @@ h1, h2, h3 {
   font-weight: 700;
 }
 
+// Attention style for content headers
+.content-header.att {
+  color: #ffe082; // Soft yellow (Material Amber 200)
+}
+
+/* spa-records-app/src/app/intro/intro.component.scss */
+p.att {
+  outline: 2px solid #ffe082; /* Soft yellow outline */
+  outline-offset: 2px;
+  padding: 2rem;
+}
+
 // Handwritten text with IM FELL DW Pica
 .handwritten-text {
   font-family: $handwriting, serif;
