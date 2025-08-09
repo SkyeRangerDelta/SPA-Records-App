@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+      - master
+      - experimental
 
 jobs:
   build-and-push:
@@ -27,19 +29,29 @@ jobs:
         id: repo
         run: echo "REPO=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
 
+      - name: Set image tag
+        id: tag
+        run: |
+          if [[ "${GITHUB_REF##*/}" == "master" ]]; then
+            echo "TAG=latest" >> $GITHUB_ENV
+          elif [[ "${GITHUB_REF##*/}" == "experimental" ]]; then
+            echo "TAG=experimental" >> $GITHUB_ENV
+          else
+            echo "TAG=latest" >> $GITHUB_ENV
+          fi
+
       - name: Build Docker image
         run: |
           docker build \
             --label "org.opencontainers.image.authors=${{ github.actor }}" \
             --label "org.opencontainers.image.title=${{ env.REPO }}" \
             --label "org.opencontainers.image.source=https://github.com/${{ env.REPO }}" \
-            -t ghcr.io/${{ env.REPO }}/spa-records-app:latest \
+            -t ghcr.io/${{ env.REPO }}/spa-records-app:${{ env.TAG }} \
             -t ghcr.io/${{ env.REPO }}/spa-records-app:${{ github.sha }} \
             .
 
-      - name: Push Docker image (latest)
-        run: docker push ghcr.io/${{ env.REPO }}/spa-records-app:latest
+      - name: Push Docker image (branch tag)
+        run: docker push ghcr.io/${{ env.REPO }}/spa-records-app:${{ env.TAG }}
 
       - name: Push Docker image (commit SHA)
         run: docker push ghcr.io/${{ env.REPO }}/spa-records-app:${{ github.sha }}
-
