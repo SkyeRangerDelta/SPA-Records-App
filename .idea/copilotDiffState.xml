@@ -11,6 +11,15 @@
             </PendingDiffInfo>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/deno.json">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/deno.json" />
+              <option name="originalContent" value="{&#10;  &quot;tasks&quot;: {&#10;    &quot;dev&quot;: &quot;deno run --watch main.ts&quot;&#10;  },&#10;  &quot;imports&quot;: {&#10;    &quot;@std/assert&quot;: &quot;jsr:@std/assert@1&quot;&#10;  }&#10;}&#10;" />
+              <option name="updatedContent" value="{&#10;  &quot;tasks&quot;: {&#10;    &quot;dev&quot;: &quot;deno run --watch main.ts&quot;,&#10;    &quot;docker:build&quot;: &quot;docker build -t spa-records-app .&quot;&#10;  },&#10;  &quot;imports&quot;: {&#10;    &quot;@std/assert&quot;: &quot;jsr:@std/assert@1&quot;&#10;  }&#10;}" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
       </map>
     </option>
   </component>
