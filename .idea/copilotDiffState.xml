@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="$PROJECT_DIR$/Dockerfile">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/Dockerfile" />
+              <option name="updatedContent" value="# Stage 1: Build the Angular app&#10;FROM node:20 AS build&#10;WORKDIR /app&#10;COPY spa-records-app/package.json spa-records-app/package-lock.json ./spa-records-app/&#10;WORKDIR /app/spa-records-app&#10;RUN npm ci&#10;COPY spa-records-app/ ./&#10;RUN npm run build -- --output-path=dist&#10;&#10;# Stage 2: Serve with Nginx&#10;FROM nginx:1.25-alpine&#10;COPY --from=build /app/spa-records-app/dist/ /usr/share/nginx/html/&#10;COPY spa-records-app/public/favicon.ico /usr/share/nginx/html/favicon.ico&#10;EXPOSE 80&#10;CMD [&quot;nginx&quot;, &quot;-g&quot;, &quot;daemon off;&quot;]&#10;" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
