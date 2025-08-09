@@ -105,11 +105,21 @@ h1, h2, h3 {
   color: #ffe082; // Soft yellow (Material Amber 200)
 }
 
+body.light-mode .content-header.att {
+  color: #7c5b2f; // Use the defined $color-light-accent for better contrast in light mode
+}
+
 /* spa-records-app/src/app/intro/intro.component.scss */
 p.att {
   outline: 2px solid #ffe082; /* Soft yellow outline */
   outline-offset: 2px;
   padding: 2rem;
+}
+
+body.light-mode p.att {
+  outline: 2px solid #7c5b2f; // Use $color-light-accent for better visibility in light mode
+  background: #fffbe6; // Subtle yellow background for emphasis
+  color: #212529; // $color-light-text for readability
 }
 
 // Handwritten text with IM FELL DW Pica
