@@ -7,17 +7,17 @@
   <div class="footer-col">
     <p class="footer-title">Port Authority</p>
     <ul class="footer-links">
-      <li><a href="#">About the Authority</a></li>
-      <li><a href="#">Regulations</a></li>
-      <li><a href="#">Public Notices</a></li>
+      @for ( link of footerALinks; track footerALinks ) {
+      <li><a href="{{ link.url }}">{{ link.label }}</a></li>
+      }
     </ul>
   </div>
   <div class="footer-col">
     <p class="footer-title">Contact & Info</p>
     <ul class="footer-links">
-      <li><a href="#">Contact Us</a></li>
-      <li><a href="#">Emergency Procedures</a></li>
-      <li><a href="#">Harbor Services</a></li>
+      @for ( link of footerBLinks; track footerBLinks ) {
+        <li><a href="{{ link.url }}">{{ link.label }}</a></li>
+      }
     </ul>
   </div>
 </div>
