@@ -1,0 +1,25 @@
+<h2>Port Authority Services</h2>
+<div class="footer-columns">
+  <div class="footer-col">
+    <p class="content-header">Sarim Portmaster</p>
+    <p class="fine-signature">Admiral Delta</p>
+    <br>
+    <p class="footer-title footer-links"><a href="https://sarimportauthority.org">Port Authority Main Site</a> </p>
+  </div>
+  <div class="footer-col">
+    <p class="footer-title">Port Authority</p>
+    <ul class="footer-links">
+      @for ( link of footerALinks; track link.url ) {
+      <li><a href="{{ link.url }}">{{ link.label }}</a></li>
+      }
+    </ul>
+  </div>
+  <div class="footer-col">
+    <p class="footer-title">Contact & Info</p>
+    <ul class="footer-links">
+      @for ( link of footerBLinks; track link.url ) {
+        <li><a href="{{ link.url }}">{{ link.label }}</a></li>
+      }
+    </ul>
+  </div>
+</div>

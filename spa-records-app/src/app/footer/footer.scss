@@ -1,0 +1,10 @@
+// Optional: Responsive font size for footer text
+.content-header, .fine-signature {
+  margin: 0;
+  line-height: 1.2;
+}
+
+// Prevent content from being hidden behind the fixed footer
+body {
+  padding-bottom: 70px; // Adjust to match footer height
+}

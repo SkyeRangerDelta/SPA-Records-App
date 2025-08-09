@@ -1,0 +1,86 @@
+name: Release
+
+on:
+  push:
+    branches: [master, Experimental]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  detect:
+    name: Detect changes
+    runs-on: ubuntu-latest
+    outputs:
+      frontend_changed: ${{ steps.filter.outputs.frontend }}
+      backend_changed: ${{ steps.filter.outputs.backend }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            frontend:
+              - 'spa-records-app/**'
+            backend:
+              - 'deno.json'
+              - 'main.ts'
+              - 'main_test.ts'
+              - 'Dockerfile'
+
+  build-frontend:
+    name: Build Angular (only if changed)
+    needs: detect
+    if: needs.detect.outputs.frontend_changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: spa-records-app/package-lock.json
+      - name: Install frontend deps
+        working-directory: spa-records-app
+        run: npm ci
+      - name: Build frontend
+        working-directory: spa-records-app
+        run: npm run build --if-present
+
+  test-backend:
+    name: Deno checks (only if changed)
+    needs: detect
+    if: needs.detect.outputs.backend_changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v1
+        with: { deno-version: v1.x }
+      - name: Lint/format/test
+        run: |
+          deno fmt --check
+          deno lint
+          deno test -A
+
+  release:
+    name: semantic-release
+    needs: [build-frontend, test-backend, detect]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - name: Install release deps
+        run: npm i -D semantic-release @semantic-release/git
+      - name: semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release

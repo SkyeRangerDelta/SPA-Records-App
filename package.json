@@ -1,0 +1,23 @@
+{
+  "name": "spa-records-app",
+  "private": true,
+  "version": "0.0.0",
+  "description": "App for the Sarim Port Authority's Office of the Harbour Registry.",
+  "scripts": {
+    "release": "semantic-release"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SkyeRangerDelta/SPA-Records-App.git"
+  },
+  "author": "SkyeRangerDelta",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SkyeRangerDelta/SPA-Records-App/issues"
+  },
+  "homepage": "https://github.com/SkyeRangerDelta/SPA-Records-App",
+  "devDependencies": {
+    "@semantic-release/git": "^10.0.1",
+    "semantic-release": "^24.2.7"
+  }
+}
