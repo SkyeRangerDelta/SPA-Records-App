@@ -3,17 +3,37 @@
     "master",
     {
       "name": "Experimental",
-      "prerelease": "rc"
+      "prerelease": "rc",
+      "channel": "exp"
     }
   ],
   "tagFormat": "v${version}",
   "plugins": [
+    ["@semantic-release/commit-analyzer", {
+      "preset": "angular",
+      "releaseRules": [
+        { "type": "docs", "scope": "README" ,"release": "patch" },
+        { "type": "refactor"                ,"release": "patch" },
+        { "type": "style"                   ,"release": "patch" },
+        { "type": "ci"                      ,"release": "patch" }
+      ],
+      "parserOpts": {
+        "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES"]
+      }
+    }],
+    "@semantic-release/release-notes-generator",
     [ "@semantic-release/git", {
       "assets": [
         "README.md",
         "CHANGELOG.md"
       ],
       "message": "Chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+    }],
+    ["@semantic-release/github", {
+      "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}",
+      "assets": [],
+      "successComment": false,
+      "failTitle": false
     }],
     [
       "@semantic-release/npm",
