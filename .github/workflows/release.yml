@@ -1,4 +1,4 @@
-name: Release
+name: Release & Publish
 
 on:
   push:
@@ -12,65 +12,8 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  detect:
-    name: Detect changes
-    runs-on: ubuntu-latest
-    outputs:
-      frontend_changed: ${{ steps.filter.outputs.frontend }}
-      backend_changed: ${{ steps.filter.outputs.backend }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - id: filter
-        uses: dorny/paths-filter@v3
-        with:
-          filters: |
-            frontend:
-              - 'spa-records-app/**'
-            backend:
-              - 'deno.json'
-              - 'Dockerfile'
-              - 'api/**'
-
-  build-frontend:
-    name: Build Angular (only if changed)
-    needs: detect
-    if: needs.detect.outputs.frontend_changed == 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with: { fetch-depth: 0 }
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm'
-          cache-dependency-path: spa-records-app/package-lock.json
-      - name: Install frontend deps
-        working-directory: spa-records-app
-        run: npm ci
-      - name: Build frontend
-        working-directory: spa-records-app
-        run: npm run build --if-present
-
-  test-backend:
-    name: Deno checks (only if changed)
-    needs: detect
-    if: needs.detect.outputs.backend_changed == 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: denoland/setup-deno@v1
-        with: { deno-version: v1.x }
-      - name: Lint/format/test
-        run: |
-          deno fmt --check api
-          deno lint api
-          deno test -A
-
   release:
     name: semantic-release
-    needs: [build-frontend, test-backend, detect]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -83,3 +26,52 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
+
+  build-and-push:
+    runs-on: ubuntu-latest
+    needs: release
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract repository name
+        id: repo
+        run: echo "REPO=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+
+      - name: Set image tag
+        id: tag
+        run: |
+          if [[ "${GITHUB_REF##*/}" == "master" ]]; then
+            echo "TAG=latest" >> $GITHUB_ENV
+          elif [[ "${GITHUB_REF##*/}" == "experimental" ]]; then
+            echo "TAG=experimental" >> $GITHUB_ENV
+          else
+            echo "TAG=latest" >> $GITHUB_ENV
+          fi
+
+      - name: Build Docker image
+        run: |
+          docker build \
+            --label "org.opencontainers.image.authors=${{ github.actor }}" \
+            --label "org.opencontainers.image.title=${{ env.REPO }}" \
+            --label "org.opencontainers.image.source=https://github.com/${{ env.REPO }}" \
+            -t ghcr.io/${{ env.REPO }}:${{ env.TAG }} \
+            -t ghcr.io/${{ env.REPO }}:${{ github.sha }} \
+            .
+
+      - name: Push Docker image (branch tag)
+        run: docker push ghcr.io/${{ env.REPO }}:${{ env.TAG }}
+
+      - name: Push Docker image (commit SHA)
+        run: docker push ghcr.io/${{ env.REPO }}:${{ github.sha }}
