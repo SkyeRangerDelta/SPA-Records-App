@@ -7,5 +7,8 @@ import { Component } from '@angular/core';
   styleUrl: './toggle-theme-button.scss'
 })
 export class ToggleThemeButton {
-
+  toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    document.body.classList.toggle('light-mode');
+  }
 }
