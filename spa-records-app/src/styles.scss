@@ -1,10 +1,40 @@
-
 // Include theming for Angular Material with `mat.theme()`.
 // This Sass mixin will define CSS variables that are used for styling Angular Material
 // components according to the Material 3 design spec.
 // Learn more about theming and how to use it for your application's
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
+@use 'sass:color';
+
+// Color Variables
+// Light Palette
+// Coolors: https://coolors.co/f5f6f8-dee2e6-0d47a1-212529-7c5b2f
+$color-light-primary: #f5f6f8;
+$color-light-surface: #dee2e6;
+$color-light-link-accent: #0d47a1;
+$color-light-text: #212529;
+$color-light-accent: #7c5b2f;
+
+// Dark Palette
+// Coolors: https://coolors.co/121316-6c7a89-90caf9-e3e2e6-d7b377
+$color-dark-primary: #121316;
+$color-dark-surface: #6c7a89;
+$color-dark-link-accent: #90caf9;
+$color-dark-text: #e3e2e6;
+$color-dark-accent: #d7b377;
+
+// Specific-purpose colors
+$color-blurb-border-warning: #ff9800; // Orange for warnings
+$color-blurb-border-info: #2196f3; // Blue for informational notices
+$color-blurb-border-critical: #f44336; // Red for critical notices
+
+// Custom Fonts
+$fine-header: 'Cinzel Decorative', serif;
+$header-text: 'Libre Baskerville', serif;
+$body-text: 'Merriweather', serif;
+$handwriting: 'IM FELL DW Pica', serif;
+$script: 'Allura', cursive;
+$script-fine: 'Luxurious Script', cursive;
 
 html {
   @include mat.theme((
@@ -15,25 +45,420 @@ html {
     typography: Roboto,
     density: 0,
   ));
+
+  // Defer to user's system preference, but allow override via body class
+  color-scheme: dark;
+
+  // Fall back to defined theme variables if Angular Material ones are not available
+  background-color: var(--mat-sys-surface, $color-dark-primary);
+  color: var(--mat-sys-on-surface, $color-dark-text);
+  font: var(--mat-sys-body-medium, 400 1rem/1.5 $body-text, serif);
+
+  // Optional: High contrast text rendering improvements
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* You can add global styles to this file, and also import other style files */
+
+// Apply to the HTML and Body elements
+// Light and Dark color palette assumed to be defined in a SCSS variables file or earlier
+
+html, body {
+  height: 100%;
 }
 
 body {
-  // Default the application to a light color theme. This can be changed to
-  // `dark` to enable the dark color theme, or to `light dark` to defer to the
-  // user's system settings.
-  color-scheme: light;
-
-  // Set a default background, font and text colors for the application using
-  // Angular Material's system-level CSS variables. Learn more about these
-  // variables at https://material.angular.dev/guide/system-variables
-  background-color: var(--mat-sys-surface);
-  color: var(--mat-sys-on-surface);
-  font: var(--mat-sys-body-medium);
-
-  // Reset the user agent margin.
   margin: 0;
+  font-family: $body-text, "Helvetica Neue", sans-serif;
 }
-/* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+// Dark Mode Styling
+body.dark-mode {
+  background-color: $color-dark-primary;
+  color: $color-dark-text;
+}
+
+// Light Mode Styling
+body.light-mode {
+  background-color: $color-light-primary;
+  color: $color-light-text;
+}
+
+// Font customization for headers
+h1, h2, h3 {
+  font-family: $fine-header, serif;
+}
+
+// Content headers with Libre Baskerville
+.content-header {
+  font-family: $header-text, serif;
+  font-weight: 700;
+}
+
+// Handwritten text with IM FELL DW Pica
+.handwritten-text {
+  font-family: $handwriting, serif;
+}
+
+.italic {
+  font-style: italic;
+}
+
+// Signatures with Allura
+.signature {
+  font-family: $script, cursive;
+  font-size: 1.5rem;
+}
+
+// Fine signatures with Luxurious Script
+.fine-signature {
+  font-family: $script-fine, cursive;
+  font-size: 2rem;
+}
+
+// Flexbox layout container
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+// Header styling
+header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+// Footer styling
+footer {
+  margin-top: 40px;
+  text-align: center;
+}
+
+// Section styling for spacing
+section {
+  width: 100%;
+  max-width: 900px;
+  margin: 20px 0;
+}
+
+// Navigation Menu Styling
+.nav-menu {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+  margin: 16px 0;
+}
+
+.nav-menu a {
+  font-family: $header-text, serif;
+  font-size: 1.1rem;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.nav-menu a:hover {
+  background: color.adjust($color-dark-surface, $lightness: 6%);
+  color: $color-dark-link-accent;
+}
+
+// Dark Mode Nav Links
+body.dark-mode .nav-menu a {
+  color: $color-dark-link-accent;
+}
+body.dark-mode .nav-menu a:hover,
+body.dark-mode .nav-menu a.active {
+  background: $color-dark-surface;
+  color: $color-dark-primary;
+}
+
+// Light Mode Nav Links
+body.light-mode .nav-menu a {
+  color: $color-light-link-accent;
+}
+body.light-mode .nav-menu a:hover,
+body.light-mode .nav-menu a.active {
+  background: $color-light-surface;
+  color: $color-light-link-accent;
+}
+
+// Dropdown Menus
+.nav-menu-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.nav-sub-menu {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 100%;
+  min-width: 220px;
+  background: $color-dark-surface;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  border-radius: 6px;
+  padding: 8px 0;
+  z-index: 10;
+}
+
+.nav-menu-dropdown:hover .nav-sub-menu {
+  display: block;
+}
+
+.nav-sub-menu a {
+  display: block;
+  padding: 8px 24px;
+  color: inherit;
+  text-decoration: none;
+  font-size: 1rem;
+  border-radius: 0;
+  transition: background 0.2s, color 0.2s;
+}
+
+// Hover/Active styles for dropdown in both modes
+body.dark-mode .nav-sub-menu {
+  background: $color-dark-surface;
+}
+body.dark-mode .nav-sub-menu a:hover,
+body.dark-mode .nav-sub-menu a.active {
+  background: $color-dark-link-accent;
+  color: $color-dark-primary;
+}
+
+body.light-mode .nav-sub-menu {
+  background: $color-light-primary;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid $color-light-surface;
+}
+body.light-mode .nav-sub-menu a {
+  color: $color-light-link-accent;
+}
+body.light-mode .nav-sub-menu a:hover,
+body.light-mode .nav-sub-menu a.active {
+  background: color.adjust($color-light-link-accent, $lightness: 50%);
+  color: $color-light-link-accent;
+  font-weight: 500;
+}
+
+.notice-board-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  padding: 1.5rem 0;
+}
+
+.notice-blurb-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+}
+
+// Base Blurb Styling
+.notice-blurb {
+  background: $color-dark-surface;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+  padding: 1.25rem 1.5rem;
+  transition: background 0.2s, color 0.2s;
+  border-left: 6px solid $color-dark-text;
+  color: $color-dark-text;
+
+  .notice-title {
+    font-family: $header-text, serif;
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: $color-dark-accent;
+  }
+
+  .notice-content {
+    font-family: $body-text, serif;
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+    color: $color-dark-text;
+  }
+
+  .notice-date-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 64px;
+    min-height: 64px;
+    padding: 0.25rem;
+    border-radius: 6px;
+    background: color.adjust($color-dark-surface, $lightness: 6%);
+    color: $color-dark-accent;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    font-family: $body-text;
+    line-height: 1.1;
+
+    .date-month {
+      font-size: 0.65rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      opacity: 0.9;
+    }
+
+    .date-day {
+      font-size: 1.75rem;
+      font-weight: 700;
+      line-height: 1;
+      margin: 2px 0;
+    }
+
+    .date-month-time {
+      font-size: 0.65rem;
+      font-weight: 500;
+      opacity: 0.85;
+    }
+
+    .date-year {
+      font-size: 0.6rem;
+      font-weight: 400;
+      opacity: 0.65;
+      margin-top: 2px;
+    }
+  }
+
+  body.light-mode .notice-date-icon {
+    background: color.adjust($color-light-surface, $lightness: -4%);
+    color: $color-light-accent;
+  }
+}
+
+.notice-blurb.notice-warning {
+  border-left-color: $color-blurb-border-warning;
+}
+
+.notice-blurb.notice-info {
+  border-left-color: $color-blurb-border-info;
+}
+
+.notice-blurb.notice-critical {
+  border-left-color: $color-blurb-border-critical;
+}
+
+// Light Mode Overrides
+body.light-mode .notice-blurb {
+  background: $color-light-surface;
+  color: $color-light-text;
+
+  .notice-title {
+    color: $color-light-accent;
+  }
+
+  .notice-content {
+    color: $color-light-text;
+  }
+
+  .notice-date {
+    color: color.adjust($color-light-text, $lightness: -30%);
+  }
+}
+
+// Dark Mode Enhancements (optional redundancy)
+body.dark-mode .notice-blurb {
+  background: $color-dark-surface;
+
+  .notice-title {
+    color: $color-dark-accent;
+  }
+
+  .notice-content {
+    color: $color-dark-text;
+  }
+
+  .notice-date {
+    color: $color-dark-text;
+  }
+}
+
+// Empty State
+.no-notices {
+  text-align: center;
+  color: $color-light-link-accent;
+  font-style: italic;
+  margin: 2rem 0;
+}
+
+// CCG Info Links Section Styling
+.ccg-info-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 2.5rem 0 2rem 0;
+  text-align: center;
+}
+
+.ccg-links-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 2.5rem;
+  margin-top: 1.5rem;
+}
+
+.ccg-link-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background: none;
+  border: none;
+  outline: none;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 1.25rem 2.25rem 1.5rem 2.25rem;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: background 0.18s, box-shadow 0.18s, transform 0.12s;
+  min-width: 120px;
+  min-height: 120px;
+}
+
+.ccg-link-btn:focus,
+.ccg-link-btn:hover {
+  background: color.adjust($color-dark-surface, $lightness: 8%);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+  transform: translateY(-2px) scale(1.03);
+}
+
+body.light-mode .ccg-link-btn:focus,
+body.light-mode .ccg-link-btn:hover {
+  background: color.adjust($color-light-surface, $lightness: -2%);
+}
+
+.ccg-link-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  width: 48px;
+  height: 48px;
+}
+
+.ccg-link-icon svg {
+  width: 40px;
+  height: 40px;
+  display: block;
+}
+
+.ccg-link-label {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 1.08rem;
+  font-family: $header-text, serif;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: inherit;
+}
