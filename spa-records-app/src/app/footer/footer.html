@@ -7,7 +7,7 @@
   <div class="footer-col">
     <p class="footer-title">Port Authority</p>
     <ul class="footer-links">
-      @for ( link of footerALinks; track footerALinks ) {
+      @for ( link of footerALinks; track link.url ) {
       <li><a href="{{ link.url }}">{{ link.label }}</a></li>
       }
     </ul>
@@ -15,7 +15,7 @@
   <div class="footer-col">
     <p class="footer-title">Contact & Info</p>
     <ul class="footer-links">
-      @for ( link of footerBLinks; track footerBLinks ) {
+      @for ( link of footerBLinks; track link.url ) {
         <li><a href="{{ link.url }}">{{ link.label }}</a></li>
       }
     </ul>
