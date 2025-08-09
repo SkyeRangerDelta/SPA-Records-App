@@ -3,9 +3,8 @@ name: Build and Push Docker Image to GHCR
 on:
   push:
     branches:
-      - main
       - master
-      - experimental
+      - Experimental
 
 jobs:
   build-and-push:
