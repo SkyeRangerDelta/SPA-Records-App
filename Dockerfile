@@ -9,7 +9,6 @@ RUN npm run build -- --output-path=dist
 
 # Stage 2: Serve with Nginx
 FROM nginx:1.25-alpine
-COPY --from=build /app/spa-records-app/dist/ /usr/share/nginx/html/
-COPY spa-records-app/public/favicon.ico /usr/share/nginx/html/favicon.ico
+COPY --from=build /app/spa-records-app/dist/browser /usr/share/nginx/html/
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
