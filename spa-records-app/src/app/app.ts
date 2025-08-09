@@ -11,5 +11,5 @@ import { ToggleThemeButton } from './toggle-theme-button/toggle-theme-button';
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('spa-records-app');
+  protected readonly title = signal('SPA Office of the Harbour Registry');
 }
