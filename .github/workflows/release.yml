@@ -54,7 +54,7 @@ jobs:
         run: |
           if [[ "${GITHUB_REF##*/}" == "master" ]]; then
             echo "TAG=latest" >> $GITHUB_ENV
-          elif [[ "${GITHUB_REF##*/}" == "experimental" ]]; then
+          elif [[ "${GITHUB_REF##*/}" == "Experimental" ]]; then
             echo "TAG=experimental" >> $GITHUB_ENV
           else
             echo "TAG=latest" >> $GITHUB_ENV
