@@ -240,6 +240,11 @@ section {
 }
 
 // Navigation Menu Styling
+a {
+  color: inherit;
+  text-decoration: underline;
+}
+
 .nav-menu {
   display: flex;
   gap: 2rem;
