@@ -1006,3 +1006,22 @@ body.light-mode .empty-state {
     }
   }
 }
+
+.disclaimer {
+  color: color.adjust($color-light-text, $lightness: 40%, $alpha: -0.3);
+  font-size: 0.92rem;
+  font-style: italic;
+  font-weight: 400;
+  opacity: 0.68;
+  letter-spacing: 0.01em;
+  line-height: 1.5;
+  margin-top: 1.5rem;
+  width: 100%;
+  max-width: 90vw;
+  display: inline-block;
+}
+
+body.light-mode .disclaimer {
+  color: color.adjust($color-light-text, $lightness: -8%, $alpha: -0.7);
+  opacity: 0.6;
+}
