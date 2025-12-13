@@ -560,3 +560,449 @@ body.light-mode .ccg-link-btn:hover {
   letter-spacing: 0.01em;
   color: inherit;
 }
+
+// Status badge colors (same for both modes)
+$status-active: #4caf50;
+$status-archived: #9e9e9e;
+$status-pending: #ff9800;
+$status-draft: #2196f3;
+$status-expired: #f44336;
+
+// Layout Variables
+$row-height-comfortable: 56px;
+$row-height-compact: 40px;
+
+// Component Wrapper
+.records-viewer-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  min-height: 500px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+// Toolbar Styling
+.records-toolbar {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background-color: color.adjust($color-dark-surface, $alpha: -0.7);
+  border-radius: 8px;
+  border: 1px solid color.adjust($color-dark-surface, $alpha: -0.5);
+}
+
+.toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  select,
+  input {
+    padding: 0.5rem 0.75rem;
+    border-radius: 4px;
+    border: 1px solid color.adjust($color-dark-surface, $lightness: -10%);
+    background-color: $color-dark-surface;
+    color: $color-dark-text;
+    font-size: 0.875rem;
+    transition: border-color 0.2s;
+
+    &:focus {
+      outline: none;
+      border-color: $color-dark-link-accent;
+    }
+  }
+
+  select {
+    cursor: pointer;
+    //min-width: 120px;
+  }
+}
+
+.search-group {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+
+  .search-input {
+    width: 100%;
+    padding-right: 2.5rem;
+  }
+
+  .search-input::placeholder {
+    color: color.adjust($color-dark-text, $alpha: -0.5);
+  }
+
+  .search-clear {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: $color-dark-text;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    line-height: 1;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.density-toggle {
+  button {
+    padding: 0.5rem 1rem;
+    border: 1px solid color.adjust($color-dark-surface, $lightness: -10%);
+    background-color: color.adjust($color-dark-surface, $alpha: -0.5);
+    color: $color-dark-text;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+
+    &:first-child {
+      border-radius: 4px 0 0 4px;
+    }
+
+    &:last-child {
+      border-radius: 0 4px 4px 0;
+      border-left: none;
+    }
+
+    &.active {
+      background-color: $color-dark-link-accent;
+      color: $color-dark-primary;
+      font-weight: 600;
+      border-color: $color-dark-link-accent;
+    }
+
+    &:hover:not(.active) {
+      background-color: $color-dark-surface;
+    }
+  }
+}
+
+.toolbar-divider {
+  color: color.adjust($color-dark-text, $alpha: -0.5);
+  font-weight: 300;
+}
+
+// Table/List Area
+.records-list {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid color.adjust($color-dark-surface, $alpha: -0.8);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+// Table Header
+.record-header {
+  background-color: color.adjust($color-dark-surface, $alpha: -0.85);
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid color.adjust($color-dark-surface, $alpha: -0.5);
+  cursor: default;
+
+  &:hover {
+    background-color: color.adjust($color-dark-surface, $alpha: -0.85);
+  }
+}
+
+// Row Styling
+.record-row {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr 1fr 1fr 1fr 80px;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid color.adjust($color-dark-surface, $alpha: -0.9);
+  cursor: pointer;
+  transition: background-color 200ms ease;
+
+  &:not(.record-header):hover {
+    background-color: color.adjust($color-dark-surface, $alpha: -0.9);
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.record-comfortable {
+  min-height: $row-height-comfortable;
+  padding: 1rem 1.5rem;
+}
+
+.record-compact {
+  min-height: $row-height-compact;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+
+  .col-author {
+    display: none;
+  }
+}
+
+// Column Styling
+.col-title {
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 1rem;
+}
+
+.col-type,
+.col-status {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.col-date {
+  font-size: 0.875rem;
+  opacity: 0.8;
+}
+
+.col-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.action-button {
+  background: none;
+  border: 1px solid color.adjust($color-dark-surface, $alpha: -0.5);
+  color: $color-dark-link-accent;
+  cursor: pointer;
+  font-size: 1.25rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: $color-dark-link-accent;
+    color: $color-dark-primary;
+    border-color: $color-dark-link-accent;
+  }
+}
+
+// Badge Styling
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 16px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  white-space: nowrap;
+  letter-spacing: 0.03em;
+}
+
+.badge-type {
+  background-color: color.adjust($status-draft, $alpha: -0.8);
+  color: $status-draft;
+}
+
+.badge-status-active {
+  background-color: color.adjust($status-active, $alpha: -0.8);
+  color: $status-active;
+}
+
+.badge-status-archived {
+  background-color: color.adjust($status-archived, $alpha: -0.8);
+  color: $status-archived;
+}
+
+.badge-status-pending_review {
+  background-color: color.adjust($status-pending, $alpha: -0.8);
+  color: $status-pending;
+}
+
+.badge-status-draft {
+  background-color: color.adjust($status-draft, $alpha: -0.8);
+  color: $status-draft;
+}
+
+.badge-status-expired {
+  background-color: color.adjust($status-expired, $alpha: -0.8);
+  color: $status-expired;
+}
+
+// Empty/Error/Loading States
+.empty-state,
+.error-state,
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 4rem 2rem;
+  text-align: center;
+  color: color.adjust($color-dark-text, $alpha: -0.4);
+
+  h3 {
+    font-size: 1.5rem;
+    margin: 0;
+  }
+
+  p {
+    margin: 0;
+    font-size: 1rem;
+  }
+
+  .empty-subtitle {
+    opacity: 0.7;
+    font-size: 0.875rem;
+  }
+
+  button {
+    margin-top: 1rem;
+    padding: 0.75rem 1.5rem;
+    background-color: $color-dark-link-accent;
+    color: $color-dark-primary;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      background-color: color.adjust($color-dark-link-accent, $lightness: 10%);
+    }
+  }
+}
+
+body.light-mode .empty-state {
+  color: color.adjust($color-light-text, $lightness: 20%);
+
+  h3 {
+    color: $color-light-text;
+  }
+
+  button {
+    background-color: $color-light-link-accent;
+    color: white;
+
+    &:hover {
+      background-color: color.adjust($color-light-link-accent, $lightness: -10%);
+    }
+  }
+}
+
+// Pagination Controls
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  border-top: 1px solid color.adjust($color-dark-surface, $alpha: -0.8);
+
+  button {
+    padding: 0.5rem 1.25rem;
+    background-color: $color-dark-surface;
+    color: $color-dark-text;
+    border: 1px solid color.adjust($color-dark-surface, $lightness: -10%);
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover:not(:disabled) {
+      background-color: $color-dark-link-accent;
+      color: $color-dark-primary;
+      border-color: $color-dark-link-accent;
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+
+  .page-info {
+    font-weight: 600;
+    font-size: 0.875rem;
+  }
+
+  .record-count {
+    font-size: 0.875rem;
+    opacity: 0.7;
+  }
+}
+
+// Responsive Design
+@media (max-width: 1200px) {
+  .record-row {
+    grid-template-columns: 2fr 1.2fr 1fr 1fr 80px;
+
+    .col-author {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .records-viewer-container {
+    padding: 1rem;
+  }
+
+  .records-toolbar {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: stretch;
+
+    .toolbar-group {
+      flex-direction: column;
+      align-items: stretch;
+
+      select,
+      input {
+        width: 100%;
+      }
+    }
+
+    .toolbar-divider {
+      display: none;
+    }
+  }
+
+  .record-row {
+    grid-template-columns: 1fr 80px;
+    padding: 0.75rem;
+
+    .col-type,
+    .col-status,
+    .col-author,
+    .col-date {
+      display: none;
+    }
+  }
+
+  .pagination-controls {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+
+    .record-count {
+      width: 100%;
+      text-align: center;
+    }
+  }
+}

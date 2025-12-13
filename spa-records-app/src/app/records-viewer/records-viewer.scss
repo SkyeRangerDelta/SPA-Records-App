@@ -1,0 +1,118 @@
+// Import theme variables and functions
+@use 'sass:color';
+
+// Color Variables (from global styles.scss)
+$color-dark-primary: #121316;
+$color-dark-surface: #6c7a89;
+$color-dark-text: #e3e2e6;
+$color-dark-accent: #d7b377;
+$color-dark-link-accent: #90caf9;
+
+$color-light-primary: #f5f6f8;
+$color-light-surface: #dee2e6;
+$color-light-text: #212529;
+$color-light-accent: #7c5b2f;
+$color-light-link-accent: #0d47a1;
+
+
+// Light Mode Overrides
+body.light-mode {
+  .records-toolbar {
+    background-color: color.adjust($color-light-surface, $alpha: -0.3);
+    border-color: color.adjust($color-light-surface, $lightness: -10%);
+  }
+
+  .toolbar-group {
+    select,
+    input {
+      background-color: white;
+      color: $color-light-text;
+      border: 1px solid $color-light-surface;
+    }
+  }
+
+  .search-group .search-clear {
+    color: $color-light-text;
+  }
+
+  .density-toggle button {
+    background-color: color.adjust($color-light-surface, $alpha: -0.5);
+    color: $color-light-text;
+    border-color: color.adjust($color-light-surface, $lightness: -10%);
+
+    &.active {
+      background-color: $color-light-link-accent;
+      color: white;
+      border-color: $color-light-link-accent;
+    }
+
+    &:hover:not(.active) {
+      background-color: $color-light-surface;
+    }
+  }
+
+  .toolbar-divider {
+    color: color.adjust($color-light-text, $alpha: -0.5);
+  }
+
+  .records-list {
+    border-color: color.adjust($color-light-surface, $lightness: -10%);
+  }
+
+  .record-header {
+    background-color: color.adjust($color-light-surface, $lightness: -5%);
+    border-bottom-color: color.adjust($color-light-surface, $lightness: -15%);
+  }
+
+  .record-row {
+    border-bottom: 1px solid color.adjust($color-light-surface, $lightness: -5%);
+
+    &:not(.record-header):hover {
+      background-color: color.adjust($color-light-surface, $lightness: 5%);
+    }
+  }
+
+  .action-button {
+    color: $color-light-link-accent;
+    border-color: color.adjust($color-light-surface, $lightness: -15%);
+
+    &:hover {
+      background-color: $color-light-link-accent;
+      color: white;
+      border-color: $color-light-link-accent;
+    }
+  }
+  .error-state,
+  .loading-state {
+    color: color.adjust($color-light-text, $lightness: 20%);
+
+    h3 {
+      color: $color-light-text;
+    }
+
+    button {
+      background-color: $color-light-link-accent;
+      color: white;
+
+      &:hover {
+        background-color: color.adjust($color-light-link-accent, $lightness: -10%);
+      }
+    }
+  }
+
+  .pagination-controls {
+    border-top-color: color.adjust($color-light-surface, $lightness: -10%);
+
+    button {
+      background-color: white;
+      color: $color-light-text;
+      border-color: $color-light-surface;
+
+      &:hover:not(:disabled) {
+        background-color: $color-light-link-accent;
+        color: white;
+        border-color: $color-light-link-accent;
+      }
+    }
+  }
+}

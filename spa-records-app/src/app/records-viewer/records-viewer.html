@@ -1,1 +1,191 @@
-<p>records-viewer works!</p>
+<section>
+  <!-- Header -->
+  <h2 class="content-header">Records Browser</h2>
+  <p>Browse and filter the Office of the Harbour Registry records</p>
+
+<!--  <div class="records-viewer-container">-->
+
+<!--  </div>-->
+
+  <!-- Toolbar Section -->
+  <div class="records-toolbar">
+    <!-- Page Size Selector -->
+    <div class="toolbar-group">
+      <label for="pageSize">Items per page:</label>
+      <select id="pageSize" [value]="pageSize" (change)="setPageSize($event)">
+        @for (option of pageSizeOptions; track option) {
+          <option [value]="option">{{ option }}</option>
+        }
+      </select>
+    </div>
+
+    <!-- Density Toggle -->
+    <div class="toolbar-group density-toggle">
+      <button
+        type="button"
+        [class.active]="displayDensity === 'comfortable'"
+        (click)="displayDensity = 'comfortable'">
+        Comfortable
+      </button>
+      <button
+        type="button"
+        [class.active]="displayDensity === 'compact'"
+        (click)="displayDensity = 'compact'">
+        Compact
+      </button>
+    </div>
+
+    <div class="toolbar-divider">|</div>
+
+    <!-- Record Type Filter -->
+    <div class="toolbar-group">
+      <label for="recordType">Type:</label>
+      <select id="recordType"
+              [value]="selectedRecordType || ''"
+              (change)="onRecordTypeChange($any($event.target).value)">
+        <option value="">All Types</option>
+        @for (type of recordTypeOptions; track type) {
+          <option [value]="type">{{ recordTypeLabels[type] }}</option>
+        }
+      </select>
+    </div>
+
+    <!-- Record Status Filter -->
+    <div class="toolbar-group">
+      <label for="recordStatus">Status:</label>
+      <select id="recordStatus"
+              [value]="selectedRecordStatus || ''"
+              (change)="onRecordStatusChange($any($event.target).value)">
+        <option value="">All Statuses</option>
+        @for (status of recordStatusOptions; track status) {
+          <option [value]="status">{{ recordStatusLabels[status] }}</option>
+        }
+      </select>
+    </div>
+
+    <!-- Search Box -->
+    <div class="toolbar-group search-group">
+      <input type="text"
+             placeholder="Search by title or description..."
+             [(ngModel)]="searchQuery"
+             (input)="onSearchQueryChange(searchQuery)"
+             class="search-input">
+      @if (searchQuery) {
+        <button type="button"
+                (click)="searchQuery = ''; onSearchQueryChange('')"
+                class="search-clear"
+                aria-label="Clear search">
+          ×
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (loading) {
+    <div class="loading-state">
+      <p>Loading records...</p>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (errorMessage && !loading) {
+    <div class="error-state" role="alert">
+      <h3>Error</h3>
+      <p>{{ errorMessage }}</p>
+      <button type="button" (click)="loadRecords()">Try Again</button>
+    </div>
+  }
+
+  <!-- Records List -->
+  @if (!loading && !errorMessage && filteredRecords.length > 0) {
+    <div class="records-list">
+      <!-- Table Header -->
+      <div class="record-row record-header" [ngClass]="'record-' + displayDensity">
+        <div class="col-title">Title</div>
+        <div class="col-type">Type</div>
+        <div class="col-status">Status</div>
+        <div class="col-author">Author</div>
+        <div class="col-date">Updated</div>
+        <div class="col-actions"></div>
+      </div>
+
+      <!-- Table Rows -->
+      @for (record of filteredRecords; track record.id) {
+        <div class="record-row"
+             [ngClass]="'record-' + displayDensity"
+             (click)="viewRecordDetails(record.id)"
+             role="button"
+             [attr.tabindex]="0"
+             [attr.aria-label]="'View details: ' + record.title"
+             (keydown.enter)="viewRecordDetails(record.id)"
+             (keydown.space)="viewRecordDetails(record.id); $event.preventDefault()">
+
+          <div class="col-title" [title]="record.title">{{ record.title }}</div>
+
+          <div class="col-type">
+            <span class="badge badge-type">
+              {{ recordTypeLabels[record.recordType] }}
+            </span>
+          </div>
+
+          <div class="col-status">
+            <span class="badge" [ngClass]="'badge-status-' + record.status">
+              {{ recordStatusLabels[record.status] }}
+            </span>
+          </div>
+
+          <div class="col-author">{{ record.author }}</div>
+
+          <div class="col-date">{{ record.updatedAtFriendly }}</div>
+
+          <div class="col-actions">
+            <button type="button"
+                    (click)="viewRecordDetails(record.id); $event.stopPropagation()"
+                    class="action-button"
+                    title="View details"
+                    aria-label="View record details">
+              →
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Empty State -->
+  @if (!loading && !errorMessage && filteredRecords.length === 0) {
+    <div class="empty-state">
+      <h3>No Records Found</h3>
+      <p>{{ emptyStateMessage }}</p>
+      @if (selectedRecordType || selectedRecordStatus || searchQuery) {
+        <p class="empty-subtitle">Try clearing your filters or search terms.</p>
+        <button type="button" (click)="clearAllFilters()">Clear All Filters</button>
+      }
+    </div>
+  }
+
+  <!-- Pagination Controls -->
+  @if (!loading && !errorMessage && records.length > 0) {
+    <div class="pagination-controls">
+      <button type="button"
+              [disabled]="page === 1"
+              (click)="prevPage()">
+        Previous
+      </button>
+
+      <span class="page-info">Page {{ page }}@if (totalPages > 0) { of {{ totalPages }} }</span>
+
+      <button type="button"
+              [disabled]="!hasMore"
+              (click)="nextPage()">
+        Next
+      </button>
+
+      <span class="record-count">
+        ({{ (page - 1) * pageSize + 1 }} - {{ (page - 1) * pageSize + filteredRecords.length }} of {{ totalRecords }})
+      </span>
+    </div>
+  }
+
+</section>
