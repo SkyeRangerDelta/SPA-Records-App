@@ -1,3 +1,24 @@
+// Attribution type for records
+export enum AttributionType {
+  AUTHORED_BY = 'authored_by',
+  VERIFIED_BY = 'verified_by'
+}
+
+// Inventory item for cargo manifests
+export interface InventoryItem {
+  item: string;
+  quantity: number;
+  tariff?: number;        // Tariff amount in diamonds/ingots
+  quarantine?: boolean;   // Item requires quarantine
+  hazardous?: boolean;    // Item is hazardous material
+}
+
+// Crew member for crew rosters
+export interface CrewMember {
+  name: string;           // Crew member's full name
+  role: string;           // Position/role on the vessel
+}
+
 // Record Types for the Office of the Harbour Registry
 export interface RegistryRecord {
   id: number;
@@ -13,20 +34,28 @@ export interface RegistryRecord {
   recordType: RecordType;
   department?: string;
   author: string;
+  inventory?: InventoryItem[];  // For cargo manifests
+  crew?: CrewMember[];          // For crew rosters
 }
 
 export enum RecordType {
   VESSEL_REGISTRATION = 'vessel_registration',
   CARGO_MANIFEST = 'cargo_manifest',
   CREW_ROSTER = 'crew_roster',
+  PORT_CLEARANCE = 'port_clearance',
   PORT_ENTRY_LOG = 'port_entry_log',
   PORT_DEPARTURE_LOG = 'port_departure_log',
   TRADE_AGREEMENT = 'trade_agreement',
   CUSTOMS_DECLARATION = 'customs_declaration',
+  INSPECTION_REPORT = 'inspection_report',
+  INCIDENT_REPORT = 'incident_report',
+  COMPLIANCE_CERTIFICATE = 'compliance_certificate',
+  MAINTENANCE_LOG = 'maintenance_log',
+  NAVIGATIONAL_CHART = 'navigational_chart',
+  REGULATORY_NOTICE = 'regulatory_notice',
   CHARTER_DOCUMENT = 'charter_document',
   ADMINISTRATIVE_POLICY = 'administrative_policy',
   CORRESPONDENCE = 'correspondence',
-  INCIDENT_REPORT = 'incident_report',
   OTHER = 'other'
 }
 
@@ -35,14 +64,20 @@ export const RecordTypeLabels: Record<RecordType, string> = {
   [RecordType.VESSEL_REGISTRATION]: 'Vessel Registration',
   [RecordType.CARGO_MANIFEST]: 'Cargo Manifest',
   [RecordType.CREW_ROSTER]: 'Crew Roster',
+  [RecordType.PORT_CLEARANCE]: 'Port Clearance',
   [RecordType.PORT_ENTRY_LOG]: 'Port Entry Log',
   [RecordType.PORT_DEPARTURE_LOG]: 'Port Departure Log',
   [RecordType.TRADE_AGREEMENT]: 'Trade Agreement',
   [RecordType.CUSTOMS_DECLARATION]: 'Customs Declaration',
+  [RecordType.INSPECTION_REPORT]: 'Inspection Report',
+  [RecordType.INCIDENT_REPORT]: 'Incident Report',
+  [RecordType.COMPLIANCE_CERTIFICATE]: 'Compliance Certificate',
+  [RecordType.MAINTENANCE_LOG]: 'Maintenance Log',
+  [RecordType.NAVIGATIONAL_CHART]: 'Navigational Chart',
+  [RecordType.REGULATORY_NOTICE]: 'Regulatory Notice',
   [RecordType.CHARTER_DOCUMENT]: 'Charter Document',
   [RecordType.ADMINISTRATIVE_POLICY]: 'Administrative Policy',
   [RecordType.CORRESPONDENCE]: 'Official Correspondence',
-  [RecordType.INCIDENT_REPORT]: 'Incident Report',
   [RecordType.OTHER]: 'Other'
 };
 
